@@ -5,6 +5,7 @@ from django.utils import timezone
 """
 Author
 - Name - str - 80
+- Bio - textfield
 
 
 Recipe
@@ -21,6 +22,7 @@ Recipe
 
 class Author(models.Model):
     name = models.CharField(max_length=80)
+    bio = models.TextField()
 
     def __str__(self):
         return self.name

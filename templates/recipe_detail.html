@@ -7,19 +7,19 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js" integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous"></script>
 
 <div class="container">
-    {% if not post %}
-        <h1>Your requested post does not exist. {{post.id}}</h1>
+    {% if not recipe %}
+        <h1>Your requested post does not exist. {{recipe.id}}</h1>
     {% else %}
-        <h2>{{post.title}}</h2>
-        <h4>{{post.author.name}}</h4>
-        <p>{{post.about}}</p>
+        <h2>{{recipe.title}}</h2>
+        <h4><a href="/author/{{post.author.id}}/">{{recipe.author.name}}</a></h4>
+        <p>{{recipe.about}}</p>
         <ul>
-            <li>Time to make: {{post.time_to_make}} </li>
-            <li>Ingredients: {{post.ingredients}} </li>
-            <li>Equipment: {{post.equipment}} </li>
-            <li>Steps: {{post.steps}} </li>
+            <li>Time to make: {{recipe.time_to_make}} </li>
+            <li>Ingredients: {{recipe.ingredients}} </li>
+            <li>Equipment: {{recipe.equipment}} </li>
+            <li>Steps: {{recipe.steps}} </li>
         </ul>
-        <p>Posted: {{post.post_date}}</p>
+        <p>Posted: {{recipe.post_date}}</p>
         <a href="/">Go home</a>
         {% endif %}
 </div>

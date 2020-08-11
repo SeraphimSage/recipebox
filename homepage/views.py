@@ -8,9 +8,9 @@ def index(request):
     return render(request, "index.html", {"recipes": my_recipes, "welcome_name": "everyone"})
 
 
-def post_detail(request, post_id):
-    my_recipe = Recipe.objects.filter(id=post_id).first()
-    return render(request, "post_detail.html", {"post": my_recipe})
+def recipe_detail(request, recipe_id):
+    my_recipe = Recipe.objects.filter(id=recipe_id).first()
+    return render(request, "recipe_detail.html", {"recipe": my_recipe})
 
 
 def author_detail(request, author_id):
