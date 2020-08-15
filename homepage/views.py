@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse
 from homepage.models import Recipe, Author
-from homepage.forms import RecipeForm, AuthorForm
+from homepage.forms import RecipeForm, AuthorForm, LoginForm
+from django.contrib.auth import login, logout, authenticate
 # Create your views here.
 
 
@@ -47,4 +48,12 @@ def author_form_view(request):
         return HttpResponseRedirect(reverse("homepage"))
 
     form = AuthorForm()
+    return render(request, "generic_form.html", {"form": form})
+
+
+def login_view(request):
+    if request.method == "Post":
+        pass
+
+    form = LoginForm()
     return render(request, "generic_form.html", {"form": form})
