@@ -1,7 +1,9 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse
 from homepage.models import Recipe, Author
-from homepage.forms import RecipeForm, AuthorForm, LoginForm
+from homepage.forms import RecipeForm, AuthorForm, LoginForm, SignupForm
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 # Create your views here.
 
 
@@ -21,6 +23,7 @@ def author_detail(request, author_id):
     return render(request, "author_detail.html", {"author": an_author, "recipes": published_recipe})
 
 
+@login_required
 def recipe_form_view(request):
     if request.method == "POST":
         form = RecipeForm(request.POST)
@@ -33,7 +36,7 @@ def recipe_form_view(request):
                 equipment=data.get('equipment'),
                 time_to_make=data.get('time_to_make'),
                 steps=data.get('steps'),
-                author=data.get('author')
+                author=request.user.author
             )
             return HttpResponseRedirect(reverse("homepage"))
 
@@ -41,6 +44,7 @@ def recipe_form_view(request):
     return render(request, "generic_form.html", {"form": form})
 
 
+@login_required
 def author_form_view(request):
     if request.method == "POST":
         form = AuthorForm(request.POST)
@@ -53,7 +57,35 @@ def author_form_view(request):
 
 def login_view(request):
     if request.method == "Post":
-        pass
+        forms = LoginForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            user = authenticate(request, username=data.get(
+                "username"), password=data.get("password"))
+            if user:
+                login(request, user)
+                return HttpResponseRedirect(request.GET.get('next', reverse("homepage")))
 
     form = LoginForm()
     return render(request, "generic_form.html", {"form": form})
+
+
+def signup_view(request):
+    if request.method == "POST":
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            new_user = User.objects.create_user(username=data.get(
+                "username"), password=data.get("password"))
+            Author.objects.create(name=data.get("username"), user=new_user)
+            login(request, new_user)
+
+            return HttpResponseRedirect(reverse("homepage"))
+
+    form = SignupForm()
+    return render(request, "generic_form.html", {"form": form})
+
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("homepage"))
