@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from homepage.views import index
 
-from homepage.views import views
+from homepage import views
 
 
 urlpatterns = [

@@ -56,8 +56,8 @@ def author_form_view(request):
 
 
 def login_view(request):
-    if request.method == "Post":
-        forms = LoginForm(request.POST)
+    if request.method == "POST":
+        form = LoginForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
             user = authenticate(request, username=data.get(
