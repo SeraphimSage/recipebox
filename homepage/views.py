@@ -45,6 +45,15 @@ def recipe_form_view(request):
 
 
 @login_required
+def recipe_edit_view(request, recipe_id):
+    recipe = Recipe.objects.get(id=recipe_id)
+    if request.user.is_staff or recipe.author == request.user.username:
+        pass
+    else:
+        return HttpResponseRedirect(reverse('error'))
+
+
+@login_required
 def author_form_view(request):
     if request.method == 'POST':
         form = AuthorForm(request.POST)
@@ -91,3 +100,6 @@ def signup_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("homepage"))
+
+def error_view(request):
+    return render(request, 'error.html')
