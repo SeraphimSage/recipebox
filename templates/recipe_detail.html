@@ -11,7 +11,7 @@
         <h1>Your requested post does not exist. {{recipe.id}}</h1>
     {% else %}
         <h2>{{recipe.title}}</h2>
-        <h4><a href="/author/{{post.author.id}}/">{{recipe.author.name}}</a></h4>
+        <h4><a href="/author/{{recipe.author.id}}/">{{recipe.author.name}}</a></h4>
         <p>{{recipe.about}}</p>
         <ul>
             <li>Time to make: {{recipe.time_to_make}} </li>
@@ -20,6 +20,11 @@
             <li>Steps: {{recipe.steps}} </li>
         </ul>
         <p>Posted: {{recipe.post_date}}</p>
+        {% if request.user.is_authenticated %}
+        <p><a href="/add_favorite/{{recipe.id}}">Add Favorite</a></p>
+        <p><a href="/remove_favorite/{{recipe.id}}">Remove Favorite</a></p>
+        {% endif %}
+        <p><a href="/recipe/{{recipe.id}}/edit/">Edit</a></p>
         <a href="/">Go home</a>
         {% endif %}
 </div>

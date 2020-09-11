@@ -17,14 +17,21 @@ from django.contrib import admin
 from django.urls import path
 from homepage.views import index
 
-from homepage.views import index, recipe_detail, author_detail, recipe_form_view, author_form_view
+from homepage import views
 
 
 urlpatterns = [
-    path('', index, name="homepage"),
-    path('recipe/<int:recipe_id>/', recipe_detail),
-    path('author/<int:author_id>/', author_detail),
-    path('addrecipe/', recipe_form_view, name="newrecipe"),
-    path('addauthor/', author_form_view, name="newauthor"),
+    path('', views.index, name="homepage"),
+    path('recipe/<int:recipe_id>/edit/', views.recipe_edit_view, name='recipeedit'),
+    path('recipe/<int:recipe_id>/', views.recipe_detail, name='recipedetail'),
+    path('author/<int:author_id>/', views.author_detail),
+    path('add_favorite/<int:recipe_id>/', views.add_favorite, name='fave'),
+    path('remove_favorite/<int:recipe_id>/', views.remove_favorite, name='remove'),
+    path('addrecipe/', views.recipe_form_view, name="newrecipe"),
+    path('addauthor/', views.author_form_view, name="newauthor"),
+    path('login/', views.login_view, name="loginview"),
+    path('logout/', views.logout_view, name="logoutview"),
+    path('signup/', views.signup_view, name="signupview"),
+    path('error/', views.error_view, name='error'),
     path('admin/', admin.site.urls),
 ]
