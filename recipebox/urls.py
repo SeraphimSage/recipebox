@@ -25,6 +25,8 @@ urlpatterns = [
     path('recipe/<int:recipe_id>/edit/', views.recipe_edit_view, name='recipeedit'),
     path('recipe/<int:recipe_id>/', views.recipe_detail, name='recipedetail'),
     path('author/<int:author_id>/', views.author_detail),
+    path('add_favorite/<int:recipe_id>/', views.add_favorite, name='fave'),
+    path('remove_favorite/<int:recipe_id>/', views.remove_favorite, name='remove'),
     path('addrecipe/', views.recipe_form_view, name="newrecipe"),
     path('addauthor/', views.author_form_view, name="newauthor"),
     path('login/', views.login_view, name="loginview"),

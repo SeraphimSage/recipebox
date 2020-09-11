@@ -75,6 +75,25 @@ def recipe_edit_view(request, recipe_id):
     else:
         return HttpResponseRedirect(reverse('error'))
 
+# New function to add recipe to favortites
+@login_required
+def add_favorite(request, recipe_id):
+    current_user = Author.objects.get(username=request.user)
+    fav_recipe = Recipe.objects.filter(id=recipe_id).first()
+    current_user.favorites.add(fav_recipe)
+    current_user.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+# New Function to unfollow
+@login_required
+def remove_favorite(request, recipe_id):
+    current_user = Author.objects.get(username=request.user)
+    unfav_recipe = Recipe.objects.filter(id=recipe_id).first()
+    current_user.favorites.remove(unfav_recipe)
+    current_user.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 
 @login_required
 def author_form_view(request):
