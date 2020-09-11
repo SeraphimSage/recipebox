@@ -47,7 +47,9 @@ def recipe_form_view(request):
 @login_required
 def recipe_edit_view(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
-    if request.user.is_staff or recipe.author == request.user.username:
+    print(recipe.author)
+    print(request.user)
+    if request.user.is_staff or str(recipe.author) == str(request.user):
         if request.method == "POST":
             form = RecipeForm(request.POST)
             if form.is_valid():
