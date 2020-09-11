@@ -43,12 +43,33 @@ def recipe_form_view(request):
     form = RecipeForm()
     return render(request, "generic_form.html", {"form": form})
 
-
+# New function to edit recipes
 @login_required
 def recipe_edit_view(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
     if request.user.is_staff or recipe.author == request.user.username:
-        pass
+        if request.method == "POST":
+            form = RecipeForm(request.POST)
+            if form.is_valid():
+                data = form.cleaned_data
+                recipe.title = data["title"]
+                recipe.about = data["about"]
+                recipe.ingredients = data["ingredients"]
+                recipe.equipment = data["equiptment"]
+                recipe.time_to_make = data["time_to_make"]
+                recipe.steps = data["steps"]
+                recipe.save()
+                return HttpResponseRedirect(reverse("recipedetail", args=[recipe.id]))
+        data = {
+            "title": recipe.title,
+            "about": recipe.about,
+            "ingredients": recipe.ingredients,
+            "equiptment": recipe.equipment,
+            "time_to_make": recipe.time_to_make,
+            "steps": recipe.steps,
+        }
+        form = RecipeForm(initial=data)
+        return render(request, "generic_form.html", {"form": form})
     else:
         return HttpResponseRedirect(reverse('error'))
 

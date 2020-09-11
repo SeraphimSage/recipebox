@@ -22,7 +22,7 @@ from homepage import views
 
 urlpatterns = [
     path('', views.index, name="homepage"),
-    path('recipe/<int:recipe_id>/', views.recipe_detail),
+    path('recipe/<int:recipe_id>/', views.recipe_detail, name='recipedetail'),
     path('author/<int:author_id>/', views.author_detail),
     path('addrecipe/', views.recipe_form_view, name="newrecipe"),
     path('addauthor/', views.author_form_view, name="newauthor"),
