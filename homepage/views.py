@@ -46,14 +46,16 @@ def recipe_form_view(request):
 
 @login_required
 def author_form_view(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         form = AuthorForm(request.POST)
-        form.save()
-        return HttpResponseRedirect(reverse("homepage"))
-
+        if form.is_valid():
+            data = form.cleaned_data
+            new_user = User.objects.create_user(username=data.get("username"), password=data.get("password"))
+            Author.objects.create(name=data.get("username"), bio=data.get("bio"), user=new_user)
+            return HttpResponseRedirect(reverse('homepage'))
     form = AuthorForm()
-    return render(request, "generic_form.html", {"form": form})
-
+    return render(request, 'generic_form.html', {"form": form})
+    
 
 def login_view(request):
     if request.method == "POST":

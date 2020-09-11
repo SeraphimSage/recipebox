@@ -9,7 +9,7 @@
 <div class="container">
     <h1>Welcome {{welcome_name}} to my simple recipebox!</h1>
     {% if request.user.is_authenticated%}
-        <h3>Hello, {{request.user.author.name}}!</h3>
+        <h3>Hello, {{request.user.username}}!</h3>
     {%endif%}
     <h3>Like to add a new <a href="/addauthor/">author</a>?</h3>
     <h3>What about a new <a href="/addrecipe/">recipe</a>?</h3>

@@ -23,7 +23,7 @@ Recipe
 
 class Author(models.Model):
     name = models.CharField(max_length=80)
-    bio = models.TextField()
+    bio = models.TextField(null=True, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
