@@ -13,10 +13,20 @@
         <h2>{{author.name}}</h2>
         <h3>Has published these recipes</h3>
         {% for recipe in recipes %}
-            <h3><a href="/recipe/{{recipe_id}}/">{{recipe.title}}</a></h3>
+            <h3><a href="/recipe/{{recipe.id}}/">{{recipe.title}}</a></h3>
         {% endfor %}
         <h3>A little about {{author.name}}</h3>
         <p>{{author.bio}}</p>
         <a href="/">Go home</a>
+        <h3>Favorite Recipes</h3>
+        {% if favorites %}
+        <ul>
+        {% for favorite in favorites %}
+        <li><a href='/recipe/{{favorite.recipe.id}}'>{{favorite.recipe.title}}</a></li>
+        {% endfor %}
+        </ul>
+        {% else %}
+        No Favorites Yet
+        {% endif %}
     {% endif %}
 </div>

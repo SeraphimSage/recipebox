@@ -17,11 +17,13 @@ from django.contrib import admin
 from django.urls import path
 from homepage.views import index
 
-from homepage.views import views
+from homepage import views
 
 
 urlpatterns = [
     path('', views.index, name="homepage"),
+    path('fave/<int:recipe_id>', views.faving, name='faving'),
+    path('edit/<int:recipe_id>/', views.edit_recipe),
     path('recipe/<int:recipe_id>/', views.recipe_detail),
     path('author/<int:author_id>/', views.author_detail),
     path('addrecipe/', views.recipe_form_view, name="newrecipe"),

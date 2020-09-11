@@ -10,8 +10,13 @@
     {% if not recipe %}
         <h1>Your requested post does not exist. {{recipe.id}}</h1>
     {% else %}
+    {% if request.user.is_staff or request.user.author.id == recipe.author.id %}
+    <a href='/edit/{{recipe.id}}'>Edit Recipe</a>
+    {% endif %}
+    
+
         <h2>{{recipe.title}}</h2>
-        <h4><a href="author/{{post.author.id}}/">{{recipe.author.name}}</a></h4>
+        <h4><a href="/author/{{recipe.author.id}}">{{recipe.author.name}}</a></h4>
         <p>{{recipe.about}}</p>
         <ul>
             <li>Time to make: {{recipe.time_to_make}} </li>
@@ -20,6 +25,10 @@
             <li>Steps: {{recipe.steps}} </li>
         </ul>
         <p>Posted: {{recipe.post_date}}</p>
+        {% if request.user.is_active %}
+        <a href="/fave/{{recipe.id}}">Add to Favorites</a>
+        {% endif %}
         <a href="/">Go home</a>
+        
         {% endif %}
 </div>

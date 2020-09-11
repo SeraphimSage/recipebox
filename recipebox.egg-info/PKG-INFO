@@ -1,0 +1,11 @@
+Metadata-Version: 1.2
+Name: recipebox
+Version: 0.1.0
+Summary: Creates a series of recipes from various authors for users to use and enjoy.
+Home-page: UNKNOWN
+Author: SeraphimSage
+Author-email: kenneth.pinkerton90@gmail.com
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
+Requires-Python: >=3.8,<4.0

@@ -26,3 +26,11 @@ class LoginForm(forms.Form):
 class SignupForm(forms.Form):
     username = forms.CharField(max_length=240)
     password = forms.CharField(widget=forms.PasswordInput)
+
+class EditRecipe(forms.Form):
+    title = forms.CharField(max_length=50)
+    about = forms.CharField(widget=forms.Textarea)
+    ingredients = forms.CharField(widget=forms.Textarea)
+    equipment = forms.CharField(max_length=50)
+    time_to_make = forms.CharField(max_length=50)
+    steps = forms.CharField(widget=forms.Textarea)

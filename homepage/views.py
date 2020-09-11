@@ -1,11 +1,15 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse
-from homepage.models import Recipe, Author
-from homepage.forms import RecipeForm, AuthorForm, LoginForm, SignupForm
+from homepage.models import Recipe, Author, Favorite
+from homepage.forms import RecipeForm, AuthorForm, LoginForm, SignupForm, EditRecipe
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-# Create your views here.
+from django.shortcuts import get_object_or_404
 
+def faving(request, recipe_id):
+    recipe = get_object_or_404(Recipe, id=recipe_id)
+    Favorite.objects.create(author=request.user.author, recipe=recipe)
+    return HttpResponseRedirect(reverse('homepage'))
 
 def index(request):
     my_recipes = Recipe.objects.all()
@@ -20,7 +24,8 @@ def recipe_detail(request, recipe_id):
 def author_detail(request, author_id):
     an_author = Author.objects.filter(id=author_id).first()
     published_recipe = Recipe.objects.filter(author=an_author)
-    return render(request, "author_detail.html", {"author": an_author, "recipes": published_recipe})
+    favorites = Favorite.objects.filter(author=author_id)
+    return render(request, "author_detail.html", {"author": an_author, "recipes": published_recipe, 'favorites': favorites})
 
 
 @login_required
@@ -56,8 +61,8 @@ def author_form_view(request):
 
 
 def login_view(request):
-    if request.method == "Post":
-        forms = LoginForm(request.POST)
+    if request.method == "POST":
+        form = LoginForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
             user = authenticate(request, username=data.get(
@@ -89,3 +94,23 @@ def signup_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("homepage"))
+
+@login_required
+def edit_recipe(request, recipe_id):
+    recipe = Recipe.objects.filter(id=recipe_id).first()
+    if request.user.is_staff or request.user.author.id == recipe.author.id:
+        if request.method == "POST":
+            form = EditRecipe(request.POST)
+            if form.is_valid():
+                data = form.cleaned_data
+                recipe.title = data.get('title')
+                recipe.about = data.get('about')
+                recipe.ingredients = data.get('ingredients')
+                recipe.equipment = data.get('equipment')
+                recipe.time_to_make = data.get('time_to_make')
+                recipe.steps = data.get('steps')
+                recipe.save()
+                return HttpResponseRedirect(reverse('homepage'))
+    form = EditRecipe(initial={'title': recipe.title, 'about': recipe.about, 'ingredients': recipe.ingredients,
+                               'equipment': recipe.equipment, 'time_to_make': recipe.time_to_make, 'steps': recipe.steps})
+    return render(request, 'generic_form.html', {'form': form})
