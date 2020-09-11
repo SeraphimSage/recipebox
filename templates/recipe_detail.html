@@ -20,8 +20,10 @@
             <li>Steps: {{recipe.steps}} </li>
         </ul>
         <p>Posted: {{recipe.post_date}}</p>
+        {% if request.user.is_authenticated %}
         <p><a href="/add_favorite/{{recipe.id}}">Add Favorite</a></p>
-        <p><a href="remove_favorite/{{recipe.id}}">Remove Favorite</a></p>
+        <p><a href="/remove_favorite/{{recipe.id}}">Remove Favorite</a></p>
+        {% endif %}
         <p><a href="/recipe/{{recipe.id}}/edit/">Edit</a></p>
         <a href="/">Go home</a>
         {% endif %}

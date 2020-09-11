@@ -19,4 +19,8 @@
         <p>{{author.bio}}</p>
         <a href="/">Go home</a>
     {% endif %}
+    <h4>Favorite Recipes</h4>
+    {% for favorite in favorites %}
+    {{favorite}}
+    {% endfor %}
 </div>

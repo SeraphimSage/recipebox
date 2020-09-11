@@ -20,7 +20,8 @@ def recipe_detail(request, recipe_id):
 def author_detail(request, author_id):
     an_author = Author.objects.filter(id=author_id).first()
     published_recipe = Recipe.objects.filter(author=an_author)
-    return render(request, "author_detail.html", {"author": an_author, "recipes": published_recipe})
+    favorites = an_author.favorites.all()
+    return render(request, "author_detail.html", {'favorites': favorites,"author": an_author, "recipes": published_recipe})
 
 
 @login_required
@@ -47,8 +48,6 @@ def recipe_form_view(request):
 @login_required
 def recipe_edit_view(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
-    print(recipe.author)
-    print(request.user)
     if request.user.is_staff or str(recipe.author) == str(request.user):
         if request.method == "POST":
             form = RecipeForm(request.POST)
@@ -57,7 +56,7 @@ def recipe_edit_view(request, recipe_id):
                 recipe.title = data["title"]
                 recipe.about = data["about"]
                 recipe.ingredients = data["ingredients"]
-                recipe.equipment = data["equiptment"]
+                recipe.equipment = data["equipment"]
                 recipe.time_to_make = data["time_to_make"]
                 recipe.steps = data["steps"]
                 recipe.save()
@@ -66,7 +65,7 @@ def recipe_edit_view(request, recipe_id):
             "title": recipe.title,
             "about": recipe.about,
             "ingredients": recipe.ingredients,
-            "equiptment": recipe.equipment,
+            "equipment": recipe.equipment,
             "time_to_make": recipe.time_to_make,
             "steps": recipe.steps,
         }
@@ -78,7 +77,7 @@ def recipe_edit_view(request, recipe_id):
 # New function to add recipe to favortites
 @login_required
 def add_favorite(request, recipe_id):
-    current_user = Author.objects.get(username=request.user)
+    current_user = Author.objects.get(user=request.user)
     fav_recipe = Recipe.objects.filter(id=recipe_id).first()
     current_user.favorites.add(fav_recipe)
     current_user.save()
@@ -88,7 +87,7 @@ def add_favorite(request, recipe_id):
 # New Function to unfollow
 @login_required
 def remove_favorite(request, recipe_id):
-    current_user = Author.objects.get(username=request.user)
+    current_user = Author.objects.get(user=request.user)
     unfav_recipe = Recipe.objects.filter(id=recipe_id).first()
     current_user.favorites.remove(unfav_recipe)
     current_user.save()
